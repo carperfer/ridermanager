@@ -1,0 +1,71 @@
+<google-map #gMap [options]="config" [center]="config.center || { lat: 37.3902295, lng: -5.9742423}" height="100%"
+    width="100%">
+    <div #filters class="map-filters">
+
+        <p>Pedidos</p>
+        <p-inputSwitch class="switch" [(ngModel)]="ordersEnabled"></p-inputSwitch>
+
+        <p>Riders</p>
+        <p-inputSwitch class="switch" [(ngModel)]="driversEnabled"></p-inputSwitch>
+    </div>
+
+    <div *ngFor="let mark of ordersEnabled ? ordersMarkers : []">
+        <map-marker #ordermarker="mapMarker" [position]="mark.properties.getPosition()"
+            [label]="mark.properties.getLabel()" [options]="mark.options"
+            (mapClick)="openInfo(ordermarker, mapinfo, mark)" class="shadow">
+            <map-info-window #mapinfo="mapInfoWindow" class="info-card p-0 mb-0">
+                <!-- <app-order-card *ngIf="!mark.message" class="p-0 mb-0" [order]="mark.order"
+                    [orderStatuses]="orderStatuses"></app-order-card> -->
+                <div *ngIf="!mark.message" class="w-100" (click)="stopPropagation($event)">
+                    <div class="p-d-flex p-p-1 p-ai-center ">
+                        <span class="material-icons p-pr-2"> store </span>
+                        <div class="p-d-flex-inline">
+                            <h3 class="p-my-0">{{ mark.order.pickup_info.name }}</h3>
+                            <h4 class="p-my-1">
+                                {{ mark.order.pickup_info.address }},
+                                {{ mark.order.pickup_info.address_info }}
+                            </h4>
+                            <p class="p-my-0 text-secondary" *ngIf="mark.order.pickup_at">
+                                {{ mark.order.pickup_at | date:'dd/MM/yyyy HH:mm'}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-100">
+                        <hr>
+                    </div>
+
+                    <div class="p-d-flex p-p-1 p-ai-center">
+                        <span class="material-icons p-pr-2"> location_on </span>
+                        <div class="p-d-flex-inline">
+                            <h3 class="p-my-0">{{ mark.order.delivery_info.name }}</h3>
+                            <h4 class="p-my-1">
+                                {{ mark.order.delivery_info.address }},
+                                {{ mark.order.delivery_info.address_info }}
+                            </h4>
+                            <p class="p-my-0 text-secondary" *ngIf="mark.order.deliver_at">
+                                {{ mark.order.deliver_at | date:'dd/MM/yyyy HH:mm'}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="mark.message" class="p-d-flex p-jc-center" (click)="stopPropagation($event)">
+                    <p>{{mark.message}}</p>
+                </div>
+            </map-info-window>
+        </map-marker>
+    </div>
+
+    <div *ngFor="let mark of driversEnabled ? driversMarkers : []">
+        <map-marker #drivermarker="mapMarker" [position]="mark.properties.getPosition()"
+            [label]="mark.properties.getLabel()" [options]="mark.options"
+            (mapClick)="openInfo(drivermarker, mapinfo, mark)">
+            <map-info-window #mapinfo="mapInfoWindow" class="info-card p-0 mb-0">
+                <div class="p-d-flex p-jc-center" (click)="stopPropagation($event)">
+                    <p>{{mark.driver.first_name}} {{mark.driver.last_name}}</p>
+                </div>
+            </map-info-window>
+        </map-marker>
+    </div>
+
+</google-map>

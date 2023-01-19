@@ -1,0 +1,18 @@
+:host ::ng-deep {
+    & p-chip {
+        white-space: nowrap;
+    }
+    & .bg-success {
+        background-color: #41bf73;
+    }
+    & .bg-danger {
+        background-color: #dc3448;
+    }
+    & .chip-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        margin-right: 10px;
+        margin-left: -10px;
+    }
+}

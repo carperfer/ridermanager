@@ -1,0 +1,132 @@
+image: atlassian/default-image:2
+clone:
+  depth: 5
+pipelines:
+  branches:
+    develop:
+      - parallel:
+          - step:
+              name: BETA - Compiling and Uploading Backend image to Amazon ECR
+              script:
+                - TAG_VERSION='ridermanager-backend-beta'
+                - REPOSITORY_NAME='ridermanager-backend-beta'
+                - docker build ./back -t ${REPOSITORY_NAME} --file ./back/Dockerfile-beta
+                - pipe: atlassian/aws-ecr-push-image:1.4.2
+                  variables:
+                    IMAGE_NAME: ${REPOSITORY_NAME}
+                    TAGS: '${TAG_VERSION}'
+              services:
+                - docker
+          - step:
+              name: BETA - Compiling and Uploading Frontend image to Amazon ECR
+              script:
+                - TAG_VERSION='ridermanager-frontend-beta'
+                - REPOSITORY_NAME='ridermanager-frontend-beta'
+                - docker build ./front -t ${REPOSITORY_NAME} --file ./front/Dockerfile-beta
+                - pipe: atlassian/aws-ecr-push-image:1.4.2
+                  variables:
+                    IMAGE_NAME: ${REPOSITORY_NAME}
+                    TAGS: '${TAG_VERSION}'
+              services:
+                - docker
+      - step:
+          name: BETA - Preparing bundle for AWS Beanstalk
+          script:
+            - mkdir -vp conf.d
+            - cp nginx/default-prod.conf ./conf.d
+            - mv ./conf.d/default-prod.conf ./conf.d/default.conf
+            - chmod 755 replacer.sh
+            - ./replacer.sh --backendRepositoryName $AWS_ECR_RIDERMANAGER_BACKEND_BETA
+                            --backendRepositoryTag ridermanager-backend-beta
+                            --frontendRepositoryName $AWS_ECR_RIDERMANAGER_FRONTEND_BETA
+                            --frontendRepositoryTag ridermanager-frontend-beta
+            - zip -r application.zip Dockerrun.aws.json conf.d
+          artifacts:
+            - application.zip
+      - step:
+          name: BETA - Deployment on AWS Elastic Beanstalk
+          script:
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.1
+              variables:
+                APPLICATION_NAME: $APPLICATION_NAME
+                ENVIRONMENT_NAME: $ENVIRONMENT_NAME_BETA
+                ZIP_FILE: 'application.zip'
+                DESCRIPTION: 'Beta - RiderManager'
+                S3_BUCKET: $S3_BUCKET_BETA_PRODUCTION
+                COMMAND: 'all'
+                DEBUG: 'true'
+  tags:
+    v*.*.*:
+      - parallel:
+        - step:
+            name: PRODUCTION - Compiling and Uploading Backend image to Amazon ECR
+            script:
+              - export TAG_VERSION=`git tag | tail -n 1`
+              - REPOSITORY_NAME='ridermanager-backend'
+              - docker build ./back -t ${REPOSITORY_NAME} --file ./back/Dockerfile-prod
+              - pipe: atlassian/aws-ecr-push-image:1.4.2
+                variables:
+                  IMAGE_NAME: ${REPOSITORY_NAME}
+                  TAGS: '$TAG_VERSION'
+            services:
+              - docker
+        - step:
+            name: PRODUCTION - Compiling and Uploading Frontend image to Amazon ECR
+            script:
+              - export TAG_VERSION=`git tag | tail -n 1`
+              - REPOSITORY_NAME='ridermanager-frontend'
+              - docker build ./front -t ${REPOSITORY_NAME} --file ./front/Dockerfile-prod
+              - pipe: atlassian/aws-ecr-push-image:1.4.2
+                variables:
+                  IMAGE_NAME: ${REPOSITORY_NAME}
+                  TAGS: '$TAG_VERSION'
+            services:
+              - docker
+      - step:
+          name: PRODUCTION - Preparing bundle for AWS Beanstalk
+          script:
+            - export TAG_VERSION=`git tag | tail -n 1`
+            - mkdir -vp conf.d
+            - cp nginx/default-prod.conf ./conf.d
+            - mv ./conf.d/default-prod.conf ./conf.d/default.conf
+            - ./replacer.sh --backendRepositoryName $AWS_ECR_RIDERMANAGER_BACKEND_PRODUCTION
+                            --backendRepositoryTag $TAG_VERSION
+                            --frontendRepositoryName $AWS_ECR_RIDERMANAGER_FRONTEND_PRODUCTION
+                            --frontendRepositoryTag $TAG_VERSION
+            - zip -r application.zip Dockerrun.aws.json conf.d
+          artifacts:
+            - application.zip
+      - step:
+          name: PRODUCTION - Deployment on AWS Elastic Beanstalk
+          script:
+            - export TAG_VERSION=`git tag | tail -n 1`
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.1
+              variables:
+                APPLICATION_NAME: $APPLICATION_NAME
+                ENVIRONMENT_NAME: $ENVIRONMENT_NAME_PRODUCTION
+                VERSION_LABEL: '${TAG_VERSION}'
+                DESCRIPTION: 'Production - RiderManager ${TAG_VERSION}'
+                ZIP_FILE: 'application.zip'
+                S3_BUCKET: $S3_BUCKET_BETA_PRODUCTION
+                COMMAND: 'all'
+                DEBUG: 'true'
+
+  custom:
+    deployment-to-prod:
+      - variables:
+        - name: AppVersion
+      - step:
+          name: PRODUCTION - Manual Deployment to a specific version
+          script:
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.1
+              variables:
+                APPLICATION_NAME: $APPLICATION_NAME
+                ENVIRONMENT_NAME: $ENVIRONMENT_NAME_PRODUCTION
+                VERSION_LABEL: $AppVersion
+                DESCRIPTION: 'Production (Manual deployment) - RiderManager $AppVersion'
+                S3_BUCKET: $S3_BUCKET_BETA_PRODUCTION
+                COMMAND: 'deploy-only'
+definitions:
+  services:
+    docker:
+      memory: 3072

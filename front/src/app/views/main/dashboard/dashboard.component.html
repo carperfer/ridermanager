@@ -1,0 +1,136 @@
+<div id="dashboard-main-container" class="vh-100 background-primary-bg">
+
+    <div class="p-d-flex p-jc-between">
+        <h2 class="p-ml-4">Panel de pedidos</h2>
+        <div class="p-d-flex p-pr-5 p-pt-2 p-mb-1">
+            <div>
+                <p-dropdown [options]="(dropdownDrivers$ | async)!" (onChange)="filterByDriver()"
+                    [(ngModel)]="selectedFilterDriver" optionLabel="label" optionValue="value" [showClear]="true"
+                    placeholder="{{ 'orders.filter_driver' | translate }}">
+                    <ng-template let-driver pTemplate="selectedItem">
+                        <div>
+                            {{driver.label | translate}}
+                        </div>
+                    </ng-template>
+                    <ng-template let-driver pTemplate="item">
+                        <div>
+                            {{driver.label | translate}}
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <p-divider layout="vertical"></p-divider>
+            <div>
+                <p-multiSelect [options]="orderStatuses" [(ngModel)]="selectedFilterStatus"
+                    (onChange)="filterByStatus()" optionValue="id" display="chip" optionLabel="dropdownName"
+                    defaultLabel="{{ 'orders.filter_status' | translate }}">
+                    <ng-template let-status pTemplate="item">
+                        {{ "status." + status.id | translate }}
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-d-flex p-flex-wrap p-jc-around">
+        <div class="p-col-12 p-xl-4" [ngClass]="{ 'p-xl-6': (showDrivers$ | async) === false}">
+            <p-card id="new-orders">
+                <div>
+                    <div *ngIf="hideNewOrders" class="xl-hide" style="float: right">
+                        <span class="material-icons" (click)="arrowToggle('new')" style="color: var(--color-primary);">
+                            expand_more</span>
+                    </div>
+                    <div *ngIf="!hideNewOrders" class="xl-hide" style="float: right">
+                        <span class="material-icons" (click)="arrowToggle('new')" style="color: var(--color-primary);">
+                            expand_less
+                        </span>
+                    </div>
+                    <h3 class="divider-h1 p-mt-0 p-ml-2 p-mr-2" [translate]="'orders.new_orders'"></h3>
+                </div>
+                <ng-template #showNewOrdersCard>
+                    <div class="cards-container p-p-1" [ngClass]="{ hide: hideNewOrders }">
+                        <app-order-card class="p-0" [order]="order" [drivers]="(drivers$ | async)!" *ngFor="
+                                let order of (orders$ | async)!
+                                    | isAssigned: false
+                                    | orderFilter
+                                    : {
+                                        driver: this.selectedFilterDriver,
+                                        status: this.selectedFilterStatus
+                                      }
+                            " [orderStatuses]="orderStatuses">
+                        </app-order-card>
+                    </div>
+                </ng-template>
+                <div *ngIf="(orders$ | async) === undefined; else showNewOrdersCard" class="p-ml-2">
+                    {{ 'orders.no_orders_pending' | translate}}
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-12 p-xl-4" [ngClass]="{ 'p-xl-6': (showDrivers$ | async) === false}">
+            <p-card id="asigned-orders">
+                <div>
+                    <div *ngIf="hideAssignedOrders" class="xl-hide" style="float: right">
+                        <span class="material-icons" (click)="arrowToggle('assigned')"
+                            style="color: var(--color-primary);">
+                            expand_more</span>
+                    </div>
+                    <div *ngIf="!hideAssignedOrders" class="xl-hide" style="float: right">
+                        <span class="material-icons" (click)="arrowToggle('assigned')"
+                            style="color: var(--color-primary);">
+                            expand_less
+                        </span>
+                    </div>
+                    <h3 class="divider-h1 p-mt-0 p-ml-2 p-mr-2" [translate]="'orders.assigned_orders'"></h3>
+                </div>
+                <ng-template #showAssignedOrdersCard>
+                    <div class="cards-container p-p-1" [ngClass]="{ hide: hideAssignedOrders }">
+                        <app-order-card class="p-0" [order]="order" [drivers]="(drivers$ | async)!" *ngFor="
+                                let order of (orders$ | async)!
+                                    | isAssigned
+                                    | orderFilter
+                                        : {
+                                            driver: this.selectedFilterDriver,
+                                            status: this.selectedFilterStatus
+                                          }
+                            " [orderStatuses]="orderStatuses">
+                        </app-order-card>
+                    </div>
+                </ng-template>
+                <div *ngIf="
+                        (orders$ | async) === undefined
+                        else showAssignedOrdersCard
+                    " class="p-ml-2">
+                    {{ 'orders.no_orders_assigned' | translate}}
+                </div>
+            </p-card>
+        </div>
+        <div *ngIf="showDrivers$ | async" class="p-col-12 p-xl-4">
+            <p-card id="drivers-disponibility">
+                <div>
+                    <div *ngIf="hideDrivers" class="xl-hide" style="float: right">
+                        <span class="material-icons" (click)="arrowToggle('drivers')"
+                            style="color: var(--color-primary);">
+                            expand_more</span>
+                    </div>
+                    <div *ngIf="!hideDrivers" class="xl-hide" style="float: right">
+                        <span class="material-icons" (click)="arrowToggle('drivers')"
+                            style="color: var(--color-primary);">
+                            expand_less
+                        </span>
+                    </div>
+                    <h3 class="divider-h1 p-mt-0 p-ml-2 p-mr-2" [translate]="'orders.drivers'"></h3>
+                </div>
+                <ng-template #showDriversCard>
+                    <div class="cards-container" [ngClass]="{ hide: hideDrivers }">
+                        <app-driver-card class="p-p-1 driver-card" [driver]="driver"
+                            *ngFor="let driver of (drivers$ | async)!">
+                        </app-driver-card>
+                    </div>
+                </ng-template>
+                <div *ngIf="(drivers$ | async) === undefined; else showDriversCard" class="p-ml-2">
+                    No hay conductores disponibles
+                </div>
+            </p-card>
+        </div>
+    </div>
+</div>

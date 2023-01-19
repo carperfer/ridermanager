@@ -1,0 +1,114 @@
+<div id="login-main-container" class="p-d-flex h-100">
+
+    <div class="sidebar-wave-container p-col-12 p-xl-4 background-primary">
+        <div class="
+                p-d-inline-flex p-flex-column p-jc-center
+                h-100
+                p-p-4                     
+            ">
+            <img class="logo" src="assets/images/logo riders_logo-h f-azul.svg" alt="">
+            <p class="sidebar-description z-index-up" [translate]="'auth.description'"></p>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-xl-8">
+        <div class="p-d-flex p-flex-column p-jc-center p-col-12 h-100 p-mx-auto">
+            <div class="p-mx-auto form-container">
+                <h2 *ngIf="!userAlreadyRegistered" [translate]="'auth.signUp'" class="p-text-center"></h2>
+                <div *ngIf="userAlreadyRegistered title-container">
+                    <h2>Bienvenido de nuevo {{tokenData?.user?.first_name}}</h2>
+                    <p [ngStyle]="{color:'var(--gray-600)'}">Introduce tu contraseña y haz click en el siguiente botón
+                        para
+                        unirte a la empresa
+                        {{tokenData?.company?.name}} como
+                        {{tokenData?.role?.name || '' | translate}}</p>
+                </div>
+                <p-card *ngIf="!userAlreadyRegistered">
+                    <form class="p-fluid" [formGroup]="userForm" (ngSubmit)="register()">
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="first_name"
+                                    [ngClass]="{'ng-invalid ng-dirty': userForm.controls.first_name.invalid && (userForm.controls.first_name.dirty || userForm.controls.first_name.touched)}"
+                                    name="first_name" type="text" formControlName="first_name" pInputText required />
+                                <label for="first_name">{{"auth.firstName" | translate}}</label>
+                            </span>
+                        </div>
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="last_name"
+                                    [ngClass]="{'ng-invalid ng-dirty': userForm.controls.last_name.invalid && (userForm.controls.last_name.dirty || userForm.controls.last_name.touched)}"
+                                    name="last_name" type="text" formControlName="last_name" pInputText required />
+                                <label for="last_name">{{"auth.lastName" | translate}}</label>
+                            </span>
+                        </div>
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="email"
+                                    [ngClass]="{'ng-invalid ng-dirty': userForm.controls.email.invalid && (userForm.controls.email.dirty || userForm.controls.email.touched)}"
+                                    name="email" type="email" formControlName="email" pInputText required />
+                                <label for="email">{{"auth.email" | translate}}</label>
+                            </span>
+                        </div>
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="phone"
+                                    [ngClass]="{'ng-invalid ng-dirty': userForm.controls.phone.invalid && (userForm.controls.phone.dirty || userForm.controls.phone.touched)}"
+                                    name="phone" type="phone" formControlName="phone" pInputText required />
+                                <label for="phone">{{"auth.phone" | translate}}</label>
+                            </span>
+                        </div>
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="password"
+                                    [ngClass]="{'ng-invalid ng-dirty': userForm.controls.password.invalid && (userForm.controls.password.dirty || userForm.controls.password.touched)}"
+                                    name="password" type="password" formControlName="password" pInputText required />
+                                <label for="password">{{"auth.pass" | translate}}</label>
+                            </span>
+                        </div>
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="password_confirmation"
+                                    [ngClass]="{'ng-invalid ng-dirty': (userForm.controls.password_confirmation.invalid && (userForm.controls.password_confirmation.dirty || userForm.controls.password_confirmation.touched)) || passwordRepeatError}"
+                                    name="password_confirmation" type="password" formControlName="password_confirmation"
+                                    pInputText required />
+                                <label for="password_confirmation">{{"auth.confirmPass" | translate}}</label>
+                            </span>
+                        </div>
+
+                        <div class="p-grid p-nogutter p-justify-end">
+                            <button pButton type="submit" class="p-button-rounded" [label]="'auth.register' | translate"
+                                [disabled]="userForm.invalid"></button>
+                        </div>
+                    </form>
+                </p-card>
+
+                <p-card *ngIf="userAlreadyRegistered">
+                    <form class="p-fluid" [formGroup]="existingUserForm" (ngSubmit)="register()">
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="password"
+                                    [ngClass]="{'ng-invalid ng-dirty': existingUserForm.controls.password.invalid && (existingUserForm.controls.password.dirty || existingUserForm.controls.password.touched)}"
+                                    name="password" type="password" formControlName="password" pInputText required />
+                                <label for="password">{{"auth.pass" | translate}}</label>
+                            </span>
+                        </div>
+                        <div class="p-field">
+                            <span class="p-float-label">
+                                <input id="password_confirmation"
+                                    [ngClass]="{'ng-invalid ng-dirty': (existingUserForm.controls.password_confirmation.invalid && (existingUserForm.controls.password_confirmation.dirty || existingUserForm.controls.password_confirmation.touched)) || passwordRepeatError}"
+                                    name="password_confirmation" type="password" formControlName="password_confirmation"
+                                    pInputText required />
+                                <label for="password_confirmation">{{"auth.confirmPass" | translate}}</label>
+                            </span>
+                        </div>
+
+                        <div class="p-grid p-nogutter p-justify-end">
+                            <button pButton type="submit" class="p-button-rounded" [label]="'auth.register' | translate"
+                                [disabled]="existingUserForm.invalid"></button>
+                        </div>
+                    </form>
+                </p-card>
+            </div>
+        </div>
+    </div>
+</div>

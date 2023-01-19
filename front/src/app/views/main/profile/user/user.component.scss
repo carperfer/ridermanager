@@ -1,0 +1,32 @@
+:host ::ng-deep {
+    p-card {
+        display: block;
+        max-width: 600px;
+        margin-top: 16px;
+    }
+    .icon-container {
+        width: 37.5px;
+        height: 37.5px;
+        border-radius: 50%;
+        border: 2px solid var(--color-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .icon {
+        font-size: 1.2em;
+        color: var(--color-primary);
+    }
+    h3 {
+        font-weight: normal;
+    }
+    .text-title {
+        font-family: var(--font-title);
+    }
+    .logout {
+        color: var(--color-red);
+        font-weight: bold;
+        cursor: pointer;
+    }
+}

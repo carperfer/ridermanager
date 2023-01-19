@@ -1,0 +1,105 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+:host ::ng-deep {
+    &.p-card {
+        border-radius: 24px;
+        height: 100%;
+        background-color: var(--color-bg-secondary);
+    }
+    &.p-card .p-card-body {
+        background-color: var(--color-bg-secondary);
+        border-radius: 24px;
+        padding: 16px 4px;
+    }
+    &.p-card-content {
+        padding-top: 0.25rem;
+    }
+    &.p-multiselect {
+        min-width: 116px;
+    }
+    &.p-multiselect-label-container {
+        min-height: 51px;
+    }
+    &.p-multiselect-header {
+        display: none;
+    }
+    &.p-placeholder {
+        color: #000000de !important;
+    }
+    .select-all {
+        margin-right: 5px;
+    }
+    .button-control {
+        padding: 10px;
+    }
+    .each-button {
+        padding: 10px;
+        margin: 5px;
+        width: 130px;
+        height: 40px;
+        justify-content: center;
+    }
+    .cards-container {
+        display: block;
+        height: 74vh;
+        overflow-y: auto;
+    }
+    #order-filters,
+    #order-sort {
+        padding: 10px;
+        margin: 5px;
+    }
+    .new-order-btn {
+        width: 12em;
+    }
+    .square {
+        border-radius: 16px;
+    }
+    .divider-h1 {
+        color: rgba(58, 133, 255, 1);
+        text-align: left;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(58, 133, 255, 1);
+    }
+    .material-icons {
+        font-size: 28px;
+        cursor: pointer;
+    }
+    @media (max-width: 992px) {
+        h1 {
+            border-bottom: 1px solid #cccb;
+            cursor: pointer;
+        }
+    }
+    @media screen and (min-width: 1200px) {
+        .xl-hide {
+            display: none;
+        }
+    }
+    @media screen and (max-width: 1200px) {
+        .hide {
+            display: none;
+        }
+    }
+    //Scroll
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+        box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+    }
+}

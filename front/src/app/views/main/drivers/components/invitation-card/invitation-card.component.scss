@@ -1,0 +1,47 @@
+:host ::ng-deep {
+    &.tag-role {
+        display: inline-block !important;
+        width: 50px;
+        text-align: center;
+    }
+    .invitation-email {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        align-items: center;
+        display: flex;
+    }
+    .invitation-list-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        width: 100%;
+
+        .invitation-list-detail {
+            flex: 1 1 0;
+        }
+
+        .invitation-role {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            align-self: center;
+        }
+
+        .invitation-confirm-delete {
+            align-self: center;
+        }
+        .invitation-delete {
+            align-self: flex-end;
+        }
+
+        .invitation-list-action {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .p-button {
+            align-self: flex-end;
+        }
+    }
+}

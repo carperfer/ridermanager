@@ -1,0 +1,103 @@
+.logo {
+    height: 38px;
+    cursor: pointer;
+}
+.profile-picture {
+    width: 36px;
+    height: 36px;
+}
+.bg-primary-color {
+    background-color: var(--color-primary) !important;
+}
+.text-primary-color {
+    color: var(--color-primary);
+}
+.color-black {
+    color: #1f1e26;
+}
+.active button {
+    color: var(--color-primary);
+}
+// .active:hover{
+//     border-bottom: 2px solid var(--color-primary);
+// }
+.nav-opened {
+    width: 20em;
+    white-space: nowrap;
+}
+.loading-background {
+    background-color: #0004;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+.loading {
+    position: absolute;
+    left: calc(50% - 50px);
+    top: calc(50% - 50px);
+}
+:host ::ng-deep {
+    & .companyFilter .p-dropdown {
+        max-height: 35px;
+        min-width: 175px;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        font-size: 24px;
+    }
+    & .companyFilter .p-dropdown-filter {
+        max-height: 35px;
+        display: flex;
+        align-items: center;
+    }
+}
+span {
+    margin-left: 0.4em;
+}
+@media (min-width: 768px) {
+    .content-shrink {
+        width: calc(100% - 20em);
+        float: right;
+    }
+}
+@media (max-width: 768px) {
+    .nav-opened {
+        width: 100%;
+    }
+    .mobile-center a {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .mobile-border {
+        border-bottom: 1px solid #cccb;
+    }
+}
+@media (max-width: 576px) {
+    .hide {
+        display: none;
+    }
+}
+.mw-50 {
+    min-width: 50px;
+}
+.side-button-with-text {
+    width: 250px;
+}
+.main-container-without-sidebar {
+    width: calc(100vw - 50px);
+}
+.main-container-with-sidebar {
+    width: calc(100vw - 250px);
+}
+.menu-container {
+    border-right: 1px solid #cccb;
+}
+.header-container {
+    min-height: 60px;
+    border-bottom: 1px solid #cccb;
+}
+.h-100 {
+    height: 100% !important;
+}

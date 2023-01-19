@@ -1,0 +1,386 @@
+<div class="container">
+    <form
+        [formGroup]="newOrderForm"
+        (ngSubmit)="saveChanges()"
+        class="p-pt-5"
+        autocomplete="off"
+    >
+        <h2 class="">{{ "orders.new_order" | translate }}</h2>
+        <div class="p-grid p-formgrid p-jc-around">
+            <!-- PICK-UP  -->
+            <div class="p-col-12 p-md-6 p-grid p-fluid">
+                <div class="p-col-12 p-my-3">
+                    <i class="pi pi-home icon p-ml-2"></i>
+                    <h2 class="p-d-inline p-ml-3">
+                        {{ "orders.Pick_up" | translate }}
+                    </h2>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <p-autoComplete
+                        formControlName="pickupName"
+                        field="name"
+                        [suggestions]="customerSuggestions"
+                        (completeMethod)="filterCustomer($event)"
+                        (onSelect)="selectCustomerData($event)"
+                        [dropdown]="true"
+                        placeholder="{{
+                            'customers.name_customer' | translate
+                        }}*"
+                    >
+                        <ng-template let-suggestion pTemplate="item">
+                            <div>{{ suggestion.name }}</div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <span class="p-float-label">
+                        <input
+                            id="pickupPhone"
+                            [readonly]="customerIsSelected"
+                            [ngClass]="{ disabled: customerIsSelected }"
+                            formControlName="pickupPhone"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="pickupPhone"
+                            >{{ "orders.phone" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-col-12">
+                    <app-google-address
+                        #googlePickupAddress
+                        formControlName="pickupAddress"
+                        [customerIsSelected]="customerIsSelected"
+                        (addressSelected)="fillInPickUpAddress($event)"
+                        Placeholder="orders.Pick_up_address"
+                    >
+                    </app-google-address>
+                </div>
+
+                <div class="p-field p-col-12 p-md-3">
+                    <span class="p-float-label">
+                        <input
+                            id="pickupInfo"
+                            [readonly]="customerIsSelected"
+                            [ngClass]="{ disabled: customerIsSelected }"
+                            formControlName="pickupInfo"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="pickupInfo">{{
+                            "orders.Delivery_info" | translate
+                        }}</label>
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <span class="p-float-label">
+                        <input
+                            id="pickupZip"
+                            [readonly]="customerIsSelected"
+                            [ngClass]="{ disabled: customerIsSelected }"
+                            formControlName="pickupZip"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="pickupZip"
+                            >{{ "orders.zip" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-5">
+                    <span class="p-float-label">
+                        <input
+                            id="pickupCity"
+                            [readonly]="customerIsSelected"
+                            [ngClass]="{ disabled: customerIsSelected }"
+                            formControlName="pickupCity"
+                            pInputText
+                        />
+                        <label for="pickupCity"
+                            >{{ "orders.city" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <span class="p-float-label">
+                        <p-calendar
+                            formControlName="pickupDate"
+                            inputId="pickupDate"
+                            dateFormat="dd/mm/yy"
+                        >
+                        </p-calendar>
+                        <label for="pickupDate"
+                            >{{ "orders.date" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <span class="p-float-label">
+                        <p-calendar
+                            formControlName="pickupTime"
+                            (onSelect)="addAnHour()"
+                            [timeOnly]="true"
+                            inputId="pickupTime"
+                            timeFormat="HH:mm"
+                        ></p-calendar>
+                        <label for="pickupTime"
+                            >{{ "orders.hour_pick" | translate }}*</label
+                        >
+                    </span>
+                </div>
+            </div>
+
+            <!-- DELIVERY -->
+            <div class="p-col-12 p-md-6 p-grid p-fluid">
+                <div class="p-col-12 p-my-3">
+                    <i class="pi pi-map-marker icon p-ml-2"></i>
+                    <h2 class="p-d-inline p-ml-3">
+                        {{ "orders.Delivery" | translate }}
+                    </h2>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <span class="p-float-label">
+                        <input
+                            id="deliveryName"
+                            formControlName="deliveryName"
+                            type="text"
+                            pInputText
+                            required
+                        />
+                        <label for="deliveryName"
+                            >{{ "orders.Delivery_name" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <span class="p-float-label">
+                        <input
+                            id="deliveryPhone"
+                            formControlName="deliveryPhone"
+                            pInputText
+                            required
+                        />
+                        <label for="deliveryPhone"
+                            >{{ "orders.phone" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-col-12">
+                    <app-google-address
+                        #googleDeliveryAddress
+                        formControlName="deliveryAddress"
+                        (addressSelected)="fillInDeliveryAddress($event)"
+                        Placeholder="orders.Delivery_address"
+                    >
+                    </app-google-address>
+                </div>
+
+                <div class="p-field p-col-12 p-md-3">
+                    <span class="p-float-label">
+                        <input
+                            id="deliveryInfo"
+                            formControlName="deliveryInfo"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="deliveryInfo">{{
+                            "orders.Delivery_info" | translate
+                        }}</label>
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <span class="p-float-label">
+                        <input
+                            id="deliveryZip"
+                            formControlName="deliveryZip"
+                            type="text"
+                            pInputText
+                            required
+                        />
+                        <label for="deliveryZip"
+                            >{{ "orders.zip" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-5">
+                    <span class="p-float-label">
+                        <input
+                            id="deliveryCity"
+                            formControlName="deliveryCity"
+                            type="text"
+                            pInputText
+                            required
+                        />
+                        <label for="deliveryCity"
+                            >{{ "orders.city" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6">
+                    <span class="p-float-label">
+                        <p-calendar
+                            formControlName="deliveryTime"
+                            [timeOnly]="true"
+                            timeFormat="HH:mm"
+                            inputId="deliveryTime"
+                        >
+                        </p-calendar>
+                        <label for="deliveryTime"
+                            >{{ "orders.hour_del" | translate }}*</label
+                        >
+                    </span>
+                </div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="p-col-12 p-grid p-fluid p-mt-3">
+                <div class="p-col-12 p-mb-3">
+                    <i class="pi pi-cog icon p-ml-2"></i>
+                    <h2 class="p-d-inline p-ml-3">
+                        {{ "orders.properties" | translate }}
+                    </h2>
+                </div>
+
+                <!-- <div class="p-field p-col-12 p-md-4">
+                    <p-dropdown [options]="drivers" formControlName="rider" optionLabel="first_name" optionValue="id"
+                        [style]="{ minWidth: '14rem' }" placeholder="{{ 'orders.drivers' | translate }}" [ngClass]="{
+                            'ng-invalid': noRiderError,
+                            'ng-dirty': noRiderError
+                        }">
+                    </p-dropdown>
+                </div>
+
+                <div class="p-field p-col-12 p-md-4">
+                    <p-dropdown [options]="orderStatuses" formControlName="status" optionLabel="name" optionValue="id"
+                        [style]="{ minWidth: '14rem' }" placeholder="{{ 'orders.Status' | translate }}*">
+                    </p-dropdown>
+                </div> -->
+
+                <div class="p-field p-col-12 p-md-3">
+                    <span class="p-float-label">
+                        <input
+                            id="orderNumber"
+                            formControlName="orderNumber"
+                            pInputText
+                            required
+                        />
+                        <label for="orderNumber"
+                            >{{ "orders.number_order" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-2">
+                    <span class="p-float-label">
+                        <p-inputNumber
+                            mode="currency"
+                            id="amount"
+                            formControlName="amount"
+                            currency="EUR"
+                        >
+                        </p-inputNumber>
+                        <label for="amount"
+                            >{{ "orders.amount" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-3">
+                    <span class="p-float-label">
+                        <p-dropdown
+                            inputId="paymentMethod"
+                            [autoDisplayFirst]="false"
+                            [options]="payment_method_options"
+                            formControlName="paymentMethod"
+                            optionLabel="name"
+                            optionValue="id"
+                        >
+                        </p-dropdown>
+                        <label for="paymentMethod"
+                            >{{ "orders.payment_type" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div class="p-field p-col-12 p-md-2">
+                    <span class="p-float-label">
+                        <p-dropdown
+                            inputId="isPaid"
+                            [autoDisplayFirst]="false"
+                            [options]="is_already_paid_options"
+                            formControlName="isPaid"
+                            optionLabel="name"
+                            optionValue="id"
+                        >
+                        </p-dropdown>
+                        <label for="isPaid"
+                            >{{ "orders.paid" | translate }}*</label
+                        >
+                    </span>
+                </div>
+
+                <div
+                    *ngIf="
+                        newOrderForm.value.isPaid === 0 &&
+                        newOrderForm.value.paymentMethod === 1
+                    "
+                    class="p-field p-col-12 p-md-2"
+                >
+                    <span class="p-float-label">
+                        <p-inputNumber
+                            mode="currency"
+                            id="money_change"
+                            formControlName="moneyChange"
+                            currency="EUR"
+                        >
+                        </p-inputNumber>
+                        <label for="money_change">{{
+                            "orders.money_change" | translate
+                        }}</label>
+                    </span>
+                </div>
+
+                <div class="p-col-12 p-mt-3">
+                    <span class="p-float-label">
+                        <textarea
+                            formControlName="comments"
+                            id="comments"
+                            class="w-100"
+                            rows="4"
+                            pInputTextarea
+                        ></textarea>
+                        <label for="comments">{{
+                            "orders.Comments" | translate
+                        }}</label>
+                    </span>
+                </div>
+            </div>
+
+            <!-- <div class="p-field p-col-12 p-mb-5">
+            </div> -->
+        </div>
+        <div class="p-d-flex p-mt-2 p-p-2">
+            <button
+                pButton
+                type="submit"
+                class="p-col-12 p-md-3 p-button-rounded p-ml-auto"
+                [label]="'auth.send' | translate"
+                styleClass="p-button-lg"
+            ></button>
+        </div>
+    </form>
+</div>

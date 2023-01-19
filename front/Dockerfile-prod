@@ -1,0 +1,17 @@
+### STAGE 1 - Compiling angular project ###
+FROM node:16.4.2-alpine3.11 AS builder
+RUN mkdir -p /app
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm clean-install
+COPY . /app
+RUN npm run build-prod
+
+### STAGE 2 - Build a small nginx image with static website ###
+FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*                  # Remove default nginx website
+
+# From 'builder' stage, copy website to default nginx public folder
+COPY --from=builder /app/dist/front /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

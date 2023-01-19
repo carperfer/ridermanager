@@ -1,0 +1,34 @@
+:host ::ng-deep {
+    & .p-card {
+        margin: 8px 0;
+    }
+    & .p-card-body {
+        padding: 16px 8px;
+    }
+    & .p-card-content {
+        padding: 0;
+    }
+    & .weight-normal {
+        font-weight: normal;
+    }
+    & .bg-success {
+        background-color: #41bf73;
+    }
+    & .bg-danger {
+        background-color: #dc3448;
+    }
+    & .chip-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+    }
+    & .driver-btn {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10rem;
+    }
+    & .driver-btn:hover span {
+        color: white;
+    }
+}

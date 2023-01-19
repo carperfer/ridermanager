@@ -1,0 +1,40 @@
+:host ::ng-deep {
+    .drivers-container {
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-bg-secondary);
+    }
+    .table-container {
+        width: 97.5%;
+        padding-top: 1em;
+        margin: 0 auto;
+    }
+    p-table {
+        width: 95%;
+        margin-top: 1em;
+    }
+    .table-option-btn {
+        margin: 0.125em;
+    }
+    .delete-btn {
+        position: absolute;
+        margin-top: 10px;
+        margin-left: 12.5px;
+    }
+    .p-column-title-user-active {
+        font-weight: bold;
+    }
+    .send-button {
+        padding: 10px;
+        width: 100%;
+        height: 40px;
+    }
+    .select-role {
+        width: 235px !important;
+    }
+    @media screen and (max-width: 1200px) {
+        .hide {
+            display: none !important;
+        }
+    }
+}

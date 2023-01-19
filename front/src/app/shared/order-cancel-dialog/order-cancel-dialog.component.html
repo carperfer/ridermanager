@@ -1,0 +1,18 @@
+<div class="container">
+    <form [formGroup]="cancelOrderForm" (ngSubmit)="cancelOrder()" autocomplete="off">
+        <div class="p-formgrid p-jc-around">
+
+            <div>
+                <span class="p-float-label">
+                    <textarea formControlName="comments" id="comments" class="w-100" rows="4" pInputTextarea required></textarea>
+                    <label for="comments">{{"orders.Comments" | translate}}</label>
+                </span>
+            </div>
+
+        </div>
+        <div class="p-d-flex p-mt-2 p-p-2">
+            <button pButton type="submit" class="p-col-12 p-md-3 p-button-rounded p-ml-auto"
+                [label]="'auth.send' | translate" styleClass="p-button-lg"></button>
+        </div>
+    </form>
+</div>

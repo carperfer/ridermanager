@@ -1,0 +1,43 @@
+:host ::ng-deep {
+    & p-card {
+        display: block;
+        margin-top: 16px;
+    }
+    & .p-card-content {
+        padding: 0;
+    }
+    &.tag-role {
+        display: inline-block !important;
+        width: 50px;
+        text-align: center;
+    }
+    .icon-container {
+        width: 37.5px;
+        height: 37.5px;
+        border-radius: 50%;
+        border: 2px solid var(--color-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .company-name {
+        font-size: 20px;
+        margin-left: 71px;
+    }
+    .icon {
+        font-size: 1.2em;
+        color: var(--color-primary);
+    }
+    h3 {
+        font-weight: normal;
+    }
+    .text-title {
+        font-family: var(--font-title);
+    }
+    .logout {
+        color: var(--color-red);
+        font-weight: bold;
+        cursor: pointer;
+    }
+}

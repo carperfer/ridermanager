@@ -1,0 +1,71 @@
+version: '3.4'
+
+services:
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: coveriders
+      MYSQL_USER: coveriders
+      MYSQL_PASSWORD: dfsagfa453gf
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  php:
+    container_name: php
+    hostname: php
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./back:/app/src:rw
+    restart: always
+    networks:
+      - default
+    env_file:
+      - ./back/.env
+    stdin_open: true # run -i
+    tty: true # run -t
+
+  angular:
+    hostname: angular
+    container_name: angular
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=dev
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run start
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - angular
+
+networks:
+  default:
+    name: ridermanager-network
+
+volumes:
+  mysql_data:

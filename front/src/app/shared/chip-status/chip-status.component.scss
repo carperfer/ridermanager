@@ -1,0 +1,39 @@
+:host ::ng-deep {
+    & p-chip {
+        white-space: nowrap;
+    }
+    & .chip-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+    & p {
+        margin: 7px 0;
+        font-weight: bold;
+    }
+    & .bg-accepted-transparent {
+        background-color: #2fa37220;
+        color: #2fa372;
+    }
+    & .bg-picking-up-transparent {
+        background-color: #833bbc20;
+        color: #833bbc;
+    }
+    & .bg-delivering-transparent {
+        background-color: #3aa1ff20;
+        color: #3aa1ff;
+    }
+    & .bg-completed-transparent {
+        background-color: #30cf7020;
+        color: #30cf70;
+    }
+    & .bg-canceled-transparent {
+        background-color: #f02d4420;
+        color: #f02d44;
+    }
+    & .bg-troubled-transparent {
+        background-color: #fc602f20;
+        color: #fc602f;
+    }
+}

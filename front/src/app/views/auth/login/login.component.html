@@ -1,0 +1,57 @@
+<div id="login-main-container" class="p-d-flex p-flex-column">
+    <div class="sidebar-wave-container p-col-12 p-xl-4 background-primary">
+        <div class="
+                p-d-inline-flex p-flex-column p-jc-center
+                h-100
+                p-p-4                     
+            ">
+            <img class="logo" src="assets/images/logo riders_logo-h f-azul.svg" alt="">
+            <p class="sidebar-description z-index-up" [translate]="'auth.description'"></p>
+        </div>
+    </div>
+    <div class="p-col-12 p-xl-8">
+        <div class="p-d-flex p-flex-column p-jc-center p-col-12 p-xl-7 h-100 p-mx-auto">
+            <div class="p-mx-auto form-container w-100">
+                <h2 [translate]="'auth.login'" class="p-text-center"></h2>
+                <form class="p-fluid" [formGroup]="loginForm" (ngSubmit)="login()">
+                    <div class="p-field">
+                        <span class="p-float-label">
+                            <input id="email" [ngClass]="{
+                                    'ng-invalid ng-dirty': loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)
+                                }" name="email" type="email" formControlName="email" pInputText required />
+                            <label for="email">{{
+                                "auth.email" | translate
+                                }}</label>
+                        </span>
+                        <!-- <small *ngIf="loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)" class="p-error" id="email-help">Introduce tu email</small> -->
+                    </div>
+                    <div class="p-field p-mt-3">
+                        <span class="p-float-label">
+                            <input id="password" [ngClass]="{
+                                    'ng-invalid ng-dirty': loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)
+                                }" name="password" type="password" formControlName="password" pInputText required />
+                            <label for="password">{{
+                                "auth.pass" | translate
+                                }}</label>
+                        </span>
+                    </div>
+                    <button pButton type="submit" class="p-button-rounded" [label]="'auth.login' | translate"
+                        [disabled]="loginForm.invalid"></button>
+                </form>
+                <div class="p-d-flex p-jc-between p-mt-2">
+                    <button pButton (click)="goToRecoverPassword()" class="p-button-text p-px-0"
+                        [label]="'auth.ForgotPassword' | translate"></button>
+                    <button pButton (click)="goToSignUp()" class="p-button-text p-px-0"
+                        [label]="'auth.createAnAccount' | translate"></button>
+                </div>
+                <!-- <div class="p-d-flex p-mt-2">
+                    <p class="p-mr-1"
+                        >{{ "auth.notRegistered" | translate }}
+                    </p>
+                </div> -->
+            </div>
+            <!-- <p-card class="p-d-inline-flex"> -->
+            <!-- </p-card> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div>
+    <p-steps *ngIf="!isCanceled" [model]="stepsStatuses" [readonly]="true" [(activeIndex)]="activeIndex"></p-steps>
+    <div *ngFor="let status of order?.history" class="w-100">
+        <p-card class="p-my-4">
+            <div class="p-d-flex p-jc-between p-ai-center">
+                <p>{{status.created_at | date:'dd/MM/yyyy HH:mm'}}</p>
+                <p *ngIf="status.comments !== ''">{{status.comments}}</p>
+                <app-chip-status [statusId]="status.status_id" [orderStatuses]="config.data.orderStatuses">
+                </app-chip-status>
+            </div>
+        </p-card>
+    </div>
+</div>

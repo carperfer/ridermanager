@@ -1,0 +1,93 @@
+:host {
+    display: block;
+    margin-bottom: 16px;
+}
+:host ::ng-deep {
+    &.p-card .p-card-body {
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 8px;
+        padding: 0 !important;
+    }
+    & p-card:hover .p-card .p-card-body {
+        background-color: #363d490d;
+        border-radius: 20px;
+    }
+    & .p-card:hover .bg-grey {
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+    }
+    &.p-card-content {
+        padding: 0;
+    }
+    & .icon {
+        font-size: 32px;
+    }
+    & .disabled {
+        pointer-events: none;
+    }
+    & .driver-btn {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10rem;
+    }
+    & .driver-btn:hover span {
+        color: white;
+    }
+    & .chip-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+    & .chip-text {
+        white-space: nowrap;
+    }
+    & .pointer {
+        cursor: pointer;
+    }
+    & .margin-info {
+        margin-left: 40px;
+    }
+    & .order-card-button {
+        border: 2px solid var(--color-primary);
+        color: var(--color-primary);
+    }
+    & .history {
+        width: 40px;
+        height: 40px;
+        border-radius: 16%;
+        background-color: var(--color-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    & .text-secondary {
+        color: rgba(108, 117, 125, 1);
+    }
+    & .edit-button {
+        border: 1px solid #3a71ff;
+        background-color: white;
+        color: #3a71ff;
+    }
+    & .edit-button:hover {
+        border: 1px solid #3a71ff;
+        background-color: #3a71ff;
+        color: white;
+    }
+    & .bg-grey {
+        background-color: #363d490d;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+    & .align-end {
+        text-align: end;
+    }
+    & .listbox {
+        position: absolute;
+        overflow-y: auto;
+        top: 30px;
+        z-index: 1;
+    }
+}

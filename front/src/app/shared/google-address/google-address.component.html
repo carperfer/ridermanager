@@ -1,0 +1,12 @@
+<div [formGroup]="addressForm" class="google-address-input-container p-field p-fluid" (focusin)="onFocusIn($event)"
+    (focusout)="onFocusOut($event)">
+    <span class="p-float-label">
+        <input [id]="Placeholder" class="google-address-input-element" [ngClass]="{ disabled: customerIsSelected }"
+            [readonly]="customerIsSelected" ngx-google-places-autocomplete formControlName="googleAddress" #addressInput
+            (keydown.enter)="$event.preventDefault()" placeholder=""
+            [ngClass]="{'ng-invalid ng-dirty': validationError}" pInputText />
+        <label [for]="Placeholder">{{
+            Placeholder | translate
+            }}*</label>
+    </span>
+</div>

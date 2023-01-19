@@ -1,0 +1,193 @@
+<div class="drivers-container">
+    <div class="table-container">
+        <p-table #table [value]="(drivers$ | async)!" [(selection)]="selectedDrivers" dataKey="id"
+            styleClass="p-datatable-drivers" [rows]="10" [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0"
+            [globalFilterFields]="['first_name','last_name','email','phone','online']" [responsive]="true"
+            [scrollable]="true" scrollHeight="55vh">
+
+            <ng-template pTemplate="caption">
+                <div class="table-header p-d-flex p-jc-between">
+                    <h2>{{'drivers.riders_list' | translate}}</h2>
+                    <span class="p-d-flex p-ai-center">
+                        <button pButton (click)="showInvitationForm()" type="button" icon="pi pi-send"
+                            label="{{'drivers.send_invitation' | translate}}" class="p-button-rounded p-mr-3"></button>
+                        <button pButton *ngIf="showInvitationsBtns" (click)="showInvitations()" type="button"
+                            label="{{'drivers.invitations_pending' | translate}}"
+                            class="p-button-rounded p-button-outlined p-mr-3"></button>
+                        <span class="p-input-icon-left p-d-flex p-ai-center">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="table.filterGlobal($event.target.value, 'contains')"
+                                placeholder="{{'drivers.search' | translate}}" />
+                        </span>
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 3rem"></th>
+
+                    <th pSortableColumn="first_name">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'drivers.first_name' | translate}}
+                            <p-sortIcon field="first_name"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="last_name">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'drivers.last_name' | translate}}
+                            <p-sortIcon field="last_name"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="email">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.email' | translate}}
+                            <p-sortIcon field="email"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="phone">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'drivers.phone' | translate}}
+                            <p-sortIcon field="phone"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="online">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'drivers.status' | translate}}
+                            <p-sortIcon field="online"></p-sortIcon>
+                            <p-columnFilter field="online" matchMode="equals" [showMatchModes]="false"
+                                [showOperator]="false" [showAddButton]="false" display="menu" class="p-ml-auto">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                                        placeholder="Any">
+                                        <ng-template let-option pTemplate="item">
+                                            <span
+                                                [class]="'driver-badge option-' + option.value">{{option.label}}</span>
+                                        </ng-template>
+                                    </p-dropdown>
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-driver>
+                <tr *ngIf="!isActiveUser(driver.id)" class="p-selectable-row">
+                    <td class="p-column-title" style="width: 3em;">
+                        <p-tableCheckbox *ngIf="!isActiveUser(driver.id)" [value]="driver"></p-tableCheckbox>
+                    </td>
+                    <td class="p-column-title">
+                        {{driver.first_name}}
+                    </td>
+                    <td class="p-column-title">
+                        {{driver.last_name}}
+                    </td>
+                    <td class="p-column-title">
+                        {{driver.email}}
+                    </td>
+                    <td class="p-column-title">
+                        {{driver.phone}}
+                    </td>
+                    <td class="p-column-title">
+                        <app-chip-rider class="p-ml-auto p-as-center" [driver]="driver"></app-chip-rider>
+                    </td>
+                </tr>
+
+                <tr *ngIf="isActiveUser(driver.id)" class="p-selectable-row">
+                    <td class="p-column-title" style="width: 3em;">
+                        <i class="pi pi-star-o"></i>
+                    </td>
+                    <td class="p-column-title">
+                        <b>{{driver.first_name}}</b>
+                    </td>
+                    <td class="p-column-title">
+                        <b>{{driver.last_name}}</b>
+                    </td>
+                    <td class="p-column-title">
+                        <b>{{driver.email}}</b>
+                    </td>
+                    <td class="p-column-title">
+                        <b>{{driver.phone}}</b>
+                    </td>
+                    <td class="p-column-title">
+                        <app-chip-rider class="p-ml-auto p-as-center" [driver]="driver"></app-chip-rider>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="9">{{'no_results' | translate}}</td>
+                </tr>
+            </ng-template>
+            <ng-template *ngIf="showDeleteBtn" pTemplate="footer">
+                <button pButton [disabled]="!selectedDrivers?.length" (click)="deleteSelectedDriversConfirmation()"
+                    type="button" class="p-button-danger delete-btn" icon="pi pi-trash"
+                    styleClass="p-button-sm"></button>
+            </ng-template>
+
+        </p-table>
+
+        <p-confirmDialog #cd [style]="{width: '450px'}">
+            <ng-template pTemplate="footer">
+                <button type="button" pButton label="{{'drivers.cancel' | translate}}" (click)="cd.reject()"
+                    class="p-button-text"></button>
+                <button type="button" pButton label="{{'drivers.delete' | translate}}" (click)="cd.accept()"></button>
+            </ng-template>
+        </p-confirmDialog>
+
+        <p-dialog header="{{'drivers.send_invitation' | translate}}" [(visible)]="displayInvitationForm"
+            [style]="{width: '400px'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+            <form class="p-fluid" [formGroup]="invitationForm" (ngSubmit)="sendInvitation()" autocomplete="off">
+                <div class="p-field">
+                    <span class="p-float-label p-mt-2">
+                        <input id="email" [ngClass]="{
+                                'ng-invalid ng-dirty': invitationForm.controls.email.invalid && (invitationForm.controls.email.dirty || invitationForm.controls.email.touched)
+                            }" name="email" type="email" formControlName="email" pInputText required />
+                        <label for="email">{{'orders.email' | translate}}</label>
+                    </span>
+
+                    <div class="p-field p-mt-3">
+                        <span class="p-float-label">
+                            <p-selectButton [options]="roles" [(ngModel)]="selectedRole" optionLabel="name"
+                                optionValue="id" [ngClass]="{
+                            'ng-invalid ng-dirty': invitationForm.controls.selectedRole.invalid && (invitationForm.controls.selectedRole.dirty || invitationForm.controls.selectedRole.touched)
+                        }" formControlName="selectedRole"></p-selectButton>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <ng-template pTemplate="footer">
+                <p-button (click)="closeSendInvitation()" label="{{'drivers.cancel' | translate}}"
+                    styleClass="p-button-text"></p-button>
+                <p-button (click)="sendInvitation()" label="{{'drivers.send' | translate}}"
+                    [disabled]="invitationForm.invalid"></p-button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog header="{{'drivers.invitations_pending' | translate}}" [(visible)]="displayInvitations"
+            [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false"
+            [resizable]="false">
+            <p-dataView #dv [value]="invitations" filterBy="email" emptyMessage="{{'no_results' | translate}}">
+                <ng-template pTemplate="header">
+                    <span class="p-input-icon-left p-d-flex p-ai-center p-fluid">
+                        <i class="pi pi-search"></i>
+                        <input type="search" pInputText placeholder="{{'drivers.search_invitation' | translate}}"
+                            (input)="dv.filter($event.target.value, 'contains')">
+                    </span>
+                </ng-template>
+                <ng-template let-invitation pTemplate="listItem">
+                    <div class="p-col-12">
+                        <app-invitation-card [invitation]="invitation" (reloadTable)="showInvitations()">
+                        </app-invitation-card>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </p-dialog>
+
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<p-chip [ngClass]="order.is_already_paid ? 'bg-green' : 'bg-orange'" styleClass="p-py-1">
+    <span *ngIf="order.payment_type_id === 1" class="material-icons p-mr-1"> payments</span>
+    <span *ngIf="order.payment_type_id === 2" class="material-icons p-mr-1"> payment </span>
+    {{order.total | formatCurrency}}€
+</p-chip>

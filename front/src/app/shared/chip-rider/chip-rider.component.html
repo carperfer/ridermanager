@@ -1,0 +1,4 @@
+<p-chip styleClass="p-py-1">
+    <div class="chip-icon" [ngClass]="driver.online ? 'bg-success' : 'bg-danger'"></div>
+    {{this.driver.online ? 'Disponible' : 'No disponible'}}
+</p-chip>

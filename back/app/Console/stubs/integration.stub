@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Integrations;
+
+use App\Models\ApiClient;
+use App\Models\Order;
+
+class {IntegrationName} implements Integration
+{
+    public function __construct(ApiClient $apiClient)
+    {
+        // TODO: Implement __construct() method.
+    }
+
+    public function getAuth(ApiClient $apiClient): string
+    {
+        // TODO: Implement getAuth() method.
+    }
+
+    public function updateStatus(Order $order)
+    {
+        // TODO: Implement updateStatus() method.
+    }
+
+    public function updateDriverLocation(Order $order, array $location = [])
+    {
+        // TODO: Implement updateDriverLocation() method.
+    }
+}

@@ -1,0 +1,88 @@
+<p-card class="p-d-flex-inline">
+    <div class="p-d-flex p-jc-between p-ai-center p-p-2">
+        <div class="p-d-flex p-ai-center" style="position: relative">
+            <app-chip-status class="p-my-0" [ngClass]="{'disabled': !allowEdit, 'pointer' : showEditBtn}" [statusId]="order.status_id"
+                [orderStatuses]="orderStatuses" (click)="toggleListbox($event)">
+            </app-chip-status>
+
+            <p-listbox *ngIf="showListbox && showEditBtn" [options]="listboxOrderStatuses" class="listbox"
+                (onChange)="changeStatus($event.value)">
+                <ng-template let-status pTemplate="item">
+                    <div class="chip-icon bg-{{status.name}}"></div>
+                    {{'status.'+status.id | translate}}
+                </ng-template>
+            </p-listbox>
+
+            <app-chip-amount class="p-ml-1" [order]="order"></app-chip-amount>
+        </div>
+        <div class="p-d-flex p-ai-center">
+            <span *ngIf="showOrderHistory" class="material-icons icon p-mr-2" [ngClass]="{'pointer' : showOrderHistory}"
+                (click)="openOrderHistoryDialog(order)">
+                history
+            </span>
+            <button *ngIf="allowEdit && showEditBtn" type="text" pButton class="p-button-rounded p-p-2 {{!order.user_id ? '' : 'driver-btn'}}"
+                (click)="openAssignNearbyDrivers(order)" [ngClass]="{'edit-button' : order.user_id != null}">
+                <span class="material-icons p-ml-1 p-mr-2" [ngClass]="order.user_id ? 'primary-color' : 'color-white'">
+                    directions_bike
+                </span>
+                <p *ngIf="!order.user_id" class="p-m-0">
+                    {{ 'orders.assign' | translate}}
+                </p>
+                <p *ngIf="order.user_id" class="p-m-0 driver-btn">
+                    {{driver?.first_name }} {{driver?.last_name}}
+                </p>
+            </button>
+        </div>
+    </div>
+    <div (click)="openOrderEditDialog(order)" class="content" [ngClass]="{'disabled': !allowEdit, 'pointer' : showEditBtn}">
+        <div class="p-d-flex p-jc-between p-ai-center p-px-2">
+            <div>
+                <div class="p-d-flex">
+                    <span class="material-icons p-pr-2"> store </span>
+                    <h3 class="p-my-0">{{ order.pickup_info.name }}</h3>
+                </div>
+                <div>
+                    <p class="p-my-1 text-secondary p-ml-5">
+                        {{ order.pickup_info.address }},
+                        {{ order.pickup_info.address_info }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="align-end">
+                <h3 class="p-my-0">{{ order.pickup_at | date:'HH:mm'}}</h3>
+                <p class="p-my-0 text-secondary" *ngIf="order.pickup_at">
+                    {{ order.pickup_at | date:'dd/MM/yyyy'}}
+                </p>
+            </div>
+
+        </div>
+
+        <div class="p-d-flex p-jc-between p-ai-center p-px-2 p-pt-2">
+            <div>
+                <div class="p-d-flex">
+                    <span class="material-icons p-pr-2"> location_on </span>
+                    <h3 class="p-my-0">{{ order.delivery_info.name }}</h3>
+                </div>
+                <div>
+                    <p class="p-my-1 text-secondary p-ml-5">
+                        {{ order.delivery_info.address }},
+                        {{ order.delivery_info.address_info }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="align-end">
+                <h3 class="p-my-0">{{ order.deliver_at | date:'HH:mm'}}</h3>
+                <p class="p-my-0 text-secondary" *ngIf="order.pickup_at">
+                    {{ order.deliver_at | date:'dd/MM/yyyy'}}
+                </p>
+            </div>
+
+        </div>
+
+        <div class="p-d-flex p-jc-center bg-grey p-p-1">
+            <b>{{ order.number }}</b>
+        </div>
+    </div>
+</p-card>

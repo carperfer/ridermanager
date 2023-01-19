@@ -1,0 +1,19 @@
+:host ::ng-deep {
+    .w-100 {
+        width: 100%;
+    }
+    .p-grid {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .icon {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .btn {
+        height: 2.5em;
+    }
+    .is-dirty #location-label {
+        visibility: hidden;
+    }
+}

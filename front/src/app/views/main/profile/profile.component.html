@@ -1,0 +1,10 @@
+<div class="p-mx-3 h-100">
+    <h3>{{'profile.profile_title' | translate}}</h3>
+    <div style="position: relative;">
+        <button pButton type="text" class="p-button-rounded p-mr-3 new-company" icon="pi pi-plus"
+            [label]="'profile.create_company' | translate" (click)="openNewCompanyDialog()"></button>
+        <p-tabMenu [model]="items" [activeItem]="activeItem">
+        </p-tabMenu>
+    </div>
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,97 @@
+<p-card [header]="'profile.profile_title' | translate">
+    <div class="p-d-flex">
+        <!-- <div class="p-d-flex p-ai-center">
+            <p-avatar
+                icon="pi pi-user"
+                class="p-mr-2"
+                size="large"
+                shape="circle"
+            ></p-avatar>
+            <h3 class="p-ml-3 text-title">
+                {{ "profile.profile_title" | translate }}
+            </h3>
+        </div> -->
+        <button pButton class="p-button-rounded p-button-outlined p-mr-2 p-ml-auto" icon="pi pi-key"
+            routerLink="/view/profile/change-password" title="{{'auth.recoverPasswordBtn' | translate}}"></button>
+        <button pButton class="p-button-rounded p-button-outlined" icon="pi pi-pencil" (click)="enableEdit()"
+            title="{{'profile.editUser' | translate}}"></button>
+    </div>
+
+    <div>
+        <div *ngIf="!editMode" class="p-d-flex p-p-3">
+            <div>
+                <h3 class="text-title">
+                    {{ "drivers.first_name" | translate }}
+                </h3>
+                <h3 class="text-title">
+                    {{ "drivers.last_name" | translate }}
+                </h3>
+                <h3 class="text-title">{{ "auth.email" | translate }}</h3>
+                <h3 class="text-title">{{ "auth.phone" | translate }}</h3>
+            </div>
+
+            <div>
+                <h3 class="p-ml-5" [ngStyle]="{ color: 'var(--gray-700)' }">
+                    {{ user?.first_name }}
+                </h3>
+                <h3 class="p-ml-5" [ngStyle]="{ color: 'var(--gray-700)' }">
+                    {{ user?.last_name }}
+                </h3>
+                <h3 class="p-ml-5" [ngStyle]="{ color: 'var(--gray-700)' }">
+                    {{ user?.email }}
+                </h3>
+                <h3 class="p-ml-5" [ngStyle]="{ color: 'var(--gray-700)' }">
+                    {{ user?.phone }}
+                </h3>
+            </div>
+        </div>
+
+        <div *ngIf="editMode" class="p-d-flex p-jc-center">
+            <form [formGroup]="userForm" (ngSubmit)="save()" autocomplete="off">
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <input id="firstName" type="text" formControlName="firstName" pInputText required />
+                        <label for="firstName">{{
+                            "drivers.first_name" | translate
+                            }}</label>
+                    </span>
+                </div>
+
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <input id="lastName" type="text" formControlName="lastName" pInputText required />
+                        <label for="lastName">{{
+                            "drivers.last_name" | translate
+                            }}</label>
+                    </span>
+                </div>
+
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <input id="email" type="email" formControlName="email" pInputText required />
+                        <label for="email">{{
+                            "auth.email" | translate
+                            }}</label>
+                    </span>
+                </div>
+
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <input id="phone" type="text" formControlName="phone" pInputText required />
+                        <label for="phone">{{
+                            "auth.phone" | translate
+                            }}</label>
+                    </span>
+                </div>
+                <button pButton [disabled]="!userForm.valid" type="submit" class="p-button-rounded w-100"
+                    [label]="'auth.send' | translate"></button>
+            </form>
+        </div>
+
+        <div *ngIf=""></div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton icon="pi pi-sign-out" class="p-button-rounded p-button-danger p-button-outlined"
+            [label]="'auth.logout' | translate" (click)="logout()" iconPos="right"></button>
+    </ng-template>
+</p-card>

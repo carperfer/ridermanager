@@ -1,0 +1,17 @@
+:host ::ng-deep {
+    & .p-card {
+        margin: 8px 0;
+    }
+    & .p-card-body {
+        padding: 4px 8px;
+    }
+    .red {
+        color: var(--color-red) !important;
+        font-weight: bold;
+    }
+    @media screen and (max-width: 768px) {
+        .p-steps-title {
+            display: none;
+        }
+    }
+}

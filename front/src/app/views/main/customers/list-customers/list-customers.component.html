@@ -1,0 +1,133 @@
+<div class="customers-container">
+  <div class="table-container">
+    <p-table #table [value]="(customers$ | async)!" [(selection)]="selectedCustomers" dataKey="id"
+      styleClass="p-datatable-drivers" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+      [loading]="loading" [paginator]="true" [filterDelay]="0"
+      [globalFilterFields]="['name','phone','address','city','zip']" [responsive]="true" [scrollable]="true"
+      scrollHeight="55vh" [rowHover]="canEdit">
+
+      <ng-template pTemplate="caption">
+        <div class="table-header p-d-flex p-jc-between">
+          <h2>{{'menu.customers' | translate}}</h2>
+          <div class="p-d-flex p-ai-center">
+
+            <button pButton type="button" icon="pi pi-plus" label="{{'customers.new' | translate}}"
+              class="p-button-rounded p-mr-3" [routerLink]="['/view/customers/add']"
+              routerLinkActive="router-link-active"></button>
+
+            <span class="p-input-icon-left p-d-flex p-ai-center">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="table.filterGlobal($event?.target?.value, 'contains')"
+                placeholder="{{'drivers.search' | translate}}" />
+            </span>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+
+          <th pSortableColumn="name">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{'drivers.first_name' | translate}}
+              <p-sortIcon field="name" class="hide"></p-sortIcon>
+            </div>
+          </th>
+
+          <th pSortableColumn="phone">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{'drivers.phone' | translate}}
+            </div>
+          </th>
+
+          <th pSortableColumn="address">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{'auth.address' | translate}}
+            </div>
+          </th>
+
+          <th pSortableColumn="address_info">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{'orders.address_info' | translate}}
+            </div>
+          </th>
+
+          <th pSortableColumn="city">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{'orders.city' | translate}}
+              <p-sortIcon field="city" class="hide"></p-sortIcon>
+            </div>
+          </th>
+
+          <th pSortableColumn="zip">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              {{'orders.zip' | translate}}
+              <p-sortIcon field="zip" class="hide"></p-sortIcon>
+            </div>
+          </th>
+
+          <th></th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+        <tr class="p-row">
+          <td class="p-column-title" style="width: 3em;">
+            <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+          </td>
+          <td class="p-column-title">
+            {{customer.name}}
+          </td>
+          <td class="p-column-title">
+            {{customer.phone}}
+          </td>
+          <td class="p-column-title">
+            {{customer.address}}
+          </td>
+          <td class="p-column-title">
+            {{customer.address_info}}
+          </td>
+          <td class="p-column-title">
+            {{customer.city}}
+          </td>
+          <td class="p-column-title">
+            {{customer.zip}}
+          </td>
+          <td class="p-column-title">
+              <span class="material-icons icon p-mr-2 link-btn pointer"
+                    (click)="openExternalLink(customer.external_id)">
+                            link
+                        </span>
+              <button pButton type="text"
+                      (click)="openCustomerEditDialog(customer)" class="p-button-rounded p-p-2 table-option-btn">
+                            <span class="material-icons p-ml-1 p-mr-2 color-white">
+                                edit
+                            </span>
+                  <p class="p-m-0">{{'edit' | translate}}</p>
+              </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9">{{'no_results' | translate}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button pButton [disabled]="!selectedCustomers?.length" type="button" class="p-button-danger delete-btn"
+          icon="pi pi-trash" styleClass="p-button-sm" (click)="deleteSelectedCustomersConfirmation()"></button>
+      </ng-template>
+
+    </p-table>
+
+    <p-confirmDialog #cd [style]="{width: '450px'}">
+      <ng-template pTemplate="footer">
+        <button type="button" pButton label="{{'drivers.cancel' | translate}}" (click)="cd.reject()"
+          class="p-button-text"></button>
+        <button type="button" pButton label="{{'drivers.delete' | translate}}" (click)="cd.accept()"></button>
+      </ng-template>
+    </p-confirmDialog>
+
+  </div>
+</div>

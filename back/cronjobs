@@ -1,0 +1,2 @@
+# Run the scheduler every 5th min
+*/5 * * * * cd /app/src && /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1

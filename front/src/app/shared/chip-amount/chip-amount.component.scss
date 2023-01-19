@@ -1,0 +1,16 @@
+:host ::ng-deep {
+    & .p-chip {
+        font-weight: bold;
+    }
+    & .p-chip span {
+        cursor: default !important;
+    }
+    & .bg-green .p-chip {
+        background-color: #37c97120;
+        color: #37c971;
+    }
+    & .bg-orange .p-chip {
+        background-color: #fc602f20;
+        color: #fc602f;
+    }
+}

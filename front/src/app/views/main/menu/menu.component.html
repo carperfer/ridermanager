@@ -1,0 +1,101 @@
+<div class="p-d-flex h-100">
+    <div class="p-d-flex p-flex-column mw-50 menu-container" [ngClass]="{
+            'mw-50': !showSidebar,
+            'side-button-with-text': showSidebar
+        }">
+        <div class="p-d-flex p-jc-center p-mb-3 bg-primary-color" style="height: 60px; border-bottom: 1px solid gray">
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50" style="color: #fff"
+                (click)="toggleNav()">
+                <span class="material-icons"> menu </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text" style="color: #fff"
+                (click)="toggleNav()" label="{{selectedCompany?.name}}">
+                <span class="material-icons"> menu </span>
+            </button>
+        </div>
+        <div routerLink="/view/dashboard" class="p-d-flex p-jc-center p-mb-3" routerLinkActive='active'>
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50 color-black">
+                <span class="material-icons"> view_week </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text color-black"
+                label="{{ 'menu.dashboard' | translate }}">
+                <span class="material-icons"> view_week </span>
+            </button>
+        </div>
+        <div routerLink="/view/orders" class="p-d-flex p-jc-center p-mb-3" routerLinkActive='active'>
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50 color-black">
+                <span class="material-icons"> widgets </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text color-black"
+                label="{{ 'menu.orders' | translate }}">
+                <span class="material-icons"> widgets </span>
+            </button>
+        </div>
+        <div *ngIf="showRidersSection" routerLink="/view/drivers" class="p-d-flex p-jc-center p-mb-3"
+            routerLinkActive='active'>
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50 color-black">
+                <span class="material-icons"> directions_bike </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text color-black"
+                label="{{ 'menu.drivers' | translate }}">
+                <span class="material-icons"> directions_bike </span>
+            </button>
+        </div>
+        <div *ngIf="showCustomersSection" routerLink="/view/customers" class="p-d-flex p-jc-center p-mb-3"
+            routerLinkActive='active'>
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50 color-black">
+                <span class="material-icons"> store </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text color-black"
+                label="{{ 'menu.customers' | translate }}">
+                <span class="material-icons"> store </span>
+            </button>
+        </div>
+        <div routerLink="/view/map" class="p-d-flex p-jc-center p-mb-3" routerLinkActive='active'>
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50 color-black">
+                <span class="material-icons"> map </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text color-black"
+                label="{{ 'menu.map' | translate }}">
+                <span class="material-icons"> map </span>
+            </button>
+        </div>
+        <div routerLink="/view/profile/user" class="p-d-flex p-jc-center p-mb-3" routerLinkActive='active'>
+            <button *ngIf="!showSidebar" pButton class="p-button-text p-px-0 mw-50 color-black">
+                <span class="material-icons"> person </span>
+            </button>
+            <button *ngIf="showSidebar" pButton class="p-col-12 p-mx-3 p-button-text color-black"
+                label="{{ 'menu.profile' | translate }}">
+                <span class="material-icons"> person </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="p-d-flex p-flex-column h-100" [ngClass]="{
+            'main-container-without-sidebar': !showSidebar,
+            'main-container-with-sidebar': showSidebar
+        }">
+        <div class="header-container p-px-3 p-d-flex p-jc-between p-ai-center">
+            <div class="p-d-flex p-ai-center">
+                <img class="logo" routerLink="/view/dashboard" src="assets/images/L_logo-h.png"
+                    alt="ridermanager logo" />
+                <p-dropdown class="p-ml-4 companyFilter" [options]="allCompanies" [(ngModel)]="selectedCompany"
+                    optionLabel="name" [filter]="true" filterBy="name" (onChange)="setCompany()">
+                </p-dropdown>
+            </div>
+            <div class="p-d-flex p-ai-center">
+                <button pButton *ngIf="showCreateOrderBtn" type="text" [routerLink]="['/view/orders/add']"
+                    routerLinkActive="router-link-active" class="p-button-rounded p-mr-3"
+                    [label]="'orders.new_order' | translate"></button>
+                <!--                <p-avatar icon="pi pi-user" class="p-mr-3" size="large" shape="circle"></p-avatar>-->
+            </div>
+        </div>
+        <div class="p-d-flex-inline h-100" style="overflow: hidden;">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div *ngIf="loading" class="loading-background">
+        <p-progressSpinner class="loading"></p-progressSpinner>
+    </div>
+
+</div>

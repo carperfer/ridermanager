@@ -1,0 +1,38 @@
+### STAGE 1 - Downloading dependencies using composer ###
+FROM composer AS builder
+
+COPY . /app/
+
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-ansi \
+    --no-autoloader \
+    --no-interaction \
+    --no-scripts
+
+RUN composer dump-autoload --optimize --classmap-authoritative
+
+## STAGE 2 - Preparing image from
+FROM php:8.0.12-cli-alpine3.14
+LABEL maintainer "Carlos Perez Fernandez <carlos@covermanager.com>"
+
+# Copy project into directory
+COPY ./ /app/src/
+WORKDIR /app/src/
+
+COPY --from=builder /app/vendor /app/src/vendor
+
+RUN apk update --no-cache && \
+    apk add --no-cache --virtual .build-deps zip autoconf make g++ && \
+    pecl install -o -f redis && docker-php-ext-enable redis && \
+    docker-php-ext-install pdo pdo_mysql && \
+    docker-php-ext-enable pdo_mysql && \
+    docker-php-source delete && \
+    rm -rf /tmp/* /var/cache/* && \
+    rm -rf /var/cache/apk/* && \
+    apk del --purge .build-deps
+
+# Launch PHP server & redis
+COPY ./start.sh /
+RUN chmod +x /start.sh
+CMD ["/start.sh"]

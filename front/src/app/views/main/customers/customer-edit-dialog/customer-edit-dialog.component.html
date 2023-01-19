@@ -1,0 +1,63 @@
+<div class="container">
+    <form [formGroup]="editCustomerForm" (ngSubmit)="saveChanges()" class="p-pt-5" autocomplete="off">
+        <div class="p-grid p-formgrid p-jc-around">
+
+            <div class="p-field p-fluid p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="name" formControlName="name" type="text" pInputText required />
+                    <label for="name">{{
+                        "customers.name_customer" | translate
+                        }}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-fluid p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="phone" formControlName="phone" type="text" pInputText required />
+                    <label for="phone">{{
+                        "orders.phone" | translate
+                        }}*</label>
+                </span>
+            </div>
+
+            <div class="p-col-12 p-md-6">
+                <app-google-address #googleAdress formControlName="address" (addressSelected)="fillInAddress($event)"
+                    Placeholder="customers.address">
+                </app-google-address>
+            </div>
+
+            <div class="p-field p-fluid p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="address_info" formControlName="address_info" type="text" pInputText />
+                    <label for="address_info">{{
+                        "customers.address_info" | translate
+                        }}</label>
+                </span>
+            </div>
+
+            <div class="p-field p-fluid p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="city" formControlName="city" type="text" pInputText required />
+                    <label for="city">{{
+                        "customers.city" | translate
+                        }}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-fluid p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="zip" formControlName="zip" type="text" pInputText required />
+                    <label for="zip">{{
+                        "customers.zip" | translate
+                        }}*</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="p-d-flex p-mt-2 p-p-2">
+            <button pButton type="submit" class="p-col-12 p-md-3 p-button-rounded p-ml-auto"
+                [label]="'auth.send' | translate" styleClass="p-button-lg"></button>
+        </div>
+
+    </form>
+</div>

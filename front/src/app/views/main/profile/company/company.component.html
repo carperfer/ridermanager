@@ -1,0 +1,32 @@
+<div class=" p-grid">
+    <div *ngFor="let company of companies" class="p-col-12 p-md-4">
+        <p-card>
+            <div class="p-d-flex p-jc-between">
+                <div class="p-d-flex p-ai-center">
+                    <p-avatar icon="pi pi-user" class="p-mr-2" size="large" shape="circle"></p-avatar>
+                    <h3 class="p-ml-3 text-title">{{ "auth.company" | translate }}</h3>
+                </div>
+                <!-- TODO -->
+                <p-tag styleClass="p-mr-2 tag-role" severity="{{company.role.id === 1 ? 'success' : 'info'}}"
+                    value="{{company.role.id === 1 ? 'Admin' : 'Rider'}}"></p-tag>
+                <!-- <div class="icon-container" (click)="enableEdit()"><i class="pi pi-pencil icon"></i></div> -->
+            </div>
+
+            <div>
+                <div *ngIf="!editMode" class="p-d-flex p-jc-start">
+                    <!-- <div>
+                        <h3 class="text-title">
+                            {{ "drivers.first_name" | translate }}
+                        </h3>
+                    </div> -->
+
+                    <div>
+                        <h3 class="company-name">
+                            {{ company?.name }}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+</div>

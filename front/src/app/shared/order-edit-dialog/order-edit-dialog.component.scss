@@ -1,0 +1,27 @@
+:host {
+    width: 100%;
+}
+:host ::ng-deep {
+    .container {
+        max-width: 1200px;
+        margin: 1em auto;
+        background-color: white;
+        padding: 1em 3em;
+        border-radius: 16px;
+    }
+    .delivery-margin {
+        margin-top: 40px;
+    }
+    .btn {
+        height: 2.5em;
+    }
+    .p-field {
+        max-height: 53px;
+    }
+    .disabled {
+        opacity: 0.5;
+    }
+    .error {
+        border: 2px solid red;
+    }
+}

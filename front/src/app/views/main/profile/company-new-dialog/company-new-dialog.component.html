@@ -1,0 +1,15 @@
+<form class="p-grid" [formGroup]="newCompanyForm" (ngSubmit)="createCompany()">
+
+    <div class="p-field p-fluid p-col-12">
+        <span class="p-float-label">
+            <input id="name" formControlName="name" type="text" pInputText />
+            <label for="name">{{ "customers.name" | translate }}*</label>
+        </span>
+    </div>
+
+    <div class="p-d-flex w-100">
+        <button pButton [disabled]="newCompanyForm.invalid" type="submit"
+            class="p-col-12 p-md-3 p-button-rounded p-ml-auto" [label]="'auth.send' | translate"
+            styleClass="p-button-lg"></button>
+    </div>
+</form>

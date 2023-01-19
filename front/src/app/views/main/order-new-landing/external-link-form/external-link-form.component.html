@@ -1,0 +1,150 @@
+<form [formGroup]="externalLinkForm" class="p-mt-4" (ngSubmit)="createOrder()" autocomplete="off">
+    <div class="p-grid p-formgrid">
+
+        <div class="p-col-12 p-md-6 p-grid p-fluid p-mt-3">
+            <div class="p-col-12 p-mb-3">
+                <i class="pi pi-home icon p-ml-2"></i>
+                <h2 class="p-d-inline p-ml-3">{{'orders.Pick_up' | translate}}*</h2>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-calendar formControlName="pickupDate" inputId="pickupDate" dateFormat="dd/mm/yy">
+                    </p-calendar>
+                    <label for="pickupDate">{{'orders.date' | translate}}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-calendar formControlName="pickupTime" (onSelect)="addAnHour()" [timeOnly]="true"
+                        inputId="pickupTime" timeFormat="HH:mm"></p-calendar>
+                    <label for="pickupTime">{{'orders.hour_pick' | translate}}*</label>
+                </span>
+            </div>
+
+            <div class="p-col-12 p-grid p-mt-3 p-px-0">
+                <div class="p-col-12">
+                    <i class="pi pi-cog icon p-ml-2"></i>
+                    <h2 class="p-d-inline p-ml-3">{{'orders.properties' | translate}}</h2>
+                </div>
+                <div class="p-col-12 p-mt-3">
+                    <span class="p-float-label">
+                        <textarea formControlName="comments" id="comments" class="w-100" rows="4"
+                            pInputTextarea></textarea>
+                        <label for="comments">{{'orders.Comments' | translate}}</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="p-col-12 p-md-6 p-grid p-fluid p-mt-3">
+            <div class="p-col-12 p-mb-3">
+                <i class="pi pi-map-marker icon p-ml-2"></i>
+                <h2 class="p-d-inline p-ml-3">{{'orders.Delivery' | translate}}</h2>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6 p-mt-3">
+                <span class="p-float-label">
+                    <input id="deliveryName" formControlName="deliveryName" type="text" pInputText required />
+                    <label for="deliveryName">{{'orders.Delivery_name' | translate}}*</label>
+                </span>
+            </div>
+
+            <div class="p-col-12 p-md-6 p-mt-3">
+                <app-google-address #googleAddress formControlName="deliveryAddress"
+                    (addressSelected)="fillInAddress($event)" Placeholder="customers.address">
+                </app-google-address>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="deliveryInfo" formControlName="deliveryInfo" type="text" pInputText />
+                    <label for="deliveryInfo">{{ 'orders.Delivery_info' | translate }}</label>
+                </span>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="zip" formControlName="zip" type="text" pInputText required />
+                    <label for="zip">{{ 'orders.zip' | translate }}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="city" formControlName="city" type="text" pInputText required />
+                    <label for="city">{{ 'orders.city' | translate }}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <input id="phone" formControlName="phone" pInputText required />
+                    <label for="phone">{{'orders.phone' | translate}}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-calendar formControlName="deliveryTime" [timeOnly]="true" timeFormat="HH:mm"
+                        inputId="deliveryTime">
+                    </p-calendar>
+                    <label for="deliveryTime">{{'orders.hour_del' | translate}}*</label>
+                </span>
+            </div>
+        </div>
+
+        <!-- BOTTOM -->
+
+        <div class="p-col-12 p-md-6 p-grid p-fluid p-mt-3">
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-inputNumber mode="currency" id="amount" formControlName="amount" currency="EUR">
+                    </p-inputNumber>
+                    <label for="amount">{{"orders.amount" | translate}}*</label>
+                </span>
+            </div>
+
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-dropdown inputId="paymentMethod" [autoDisplayFirst]="false" [options]="payment_method_options"
+                        formControlName="paymentMethod" optionLabel="name" optionValue="id">
+                    </p-dropdown>
+                    <label for="paymentMethod">{{ 'orders.payment_type' | translate }}*</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="p-col-12 p-md-6 p-grid p-fluid p-mt-3">
+            <div class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-dropdown inputId="isPaid" [autoDisplayFirst]="false" [options]="is_already_paid_options"
+                        formControlName="isPaid" optionLabel="name" optionValue="id">
+                    </p-dropdown>
+                    <label for="isPaid">{{ 'orders.paid' | translate }}*</label>
+                </span>
+            </div>
+
+            <div *ngIf="
+                    externalLinkForm.value.isPaid === 0 &&
+                    externalLinkForm.value.paymentMethod === 1
+                    " class="p-field p-col-12 p-md-6">
+                <span class="p-float-label">
+                    <p-inputNumber mode="currency" id="money_change" formControlName="moneyChange" currency="EUR">
+                    </p-inputNumber>
+                    <label for="money_change">{{
+                        "orders.money_change" | translate
+                        }}</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="p-field p-col-12 p-mb-5">
+            <button pButton type="submit" class="p-col-12 p-button-rounded btn p-mt-2"
+                [label]="'auth.send' | translate"></button>
+        </div>
+    </div>
+</form>

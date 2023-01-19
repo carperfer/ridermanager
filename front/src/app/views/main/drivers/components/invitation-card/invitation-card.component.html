@@ -1,0 +1,29 @@
+<div class="invitation-list-item">
+    <div class="invitation-list-detail">
+        <div class="invitation-email">
+            <p-tag styleClass="p-mr-2 tag-role" severity="{{role_style}}" value="{{role}}"></p-tag>            
+            {{invitation.email}}  
+        </div>
+        <div class="invitation-date">{{invitation.updated_at | date:'dd/MM/yyyy HH:mm'}}</div>
+    </div>
+
+    <div *ngIf="!displayConfirmation" class="invitation-list-action">
+        <div class="invitation-delete">
+            <button pButton type="button" class="p-button-text p-button-plain"
+                icon="pi pi-trash" styleClass="p-button-sm"
+                (click)="displayConfirmation=true"></button>
+        </div>
+    </div>
+
+    <div *ngIf="displayConfirmation" class="invitation-list-action">
+        <div class="invitation-role">{{'drivers.delete_invitation_confirm' | translate}}</div>
+        <div class="invitation-confirm-delete">
+            <button pButton type="button" class="p-button-danger p-mr-3"
+                styleClass="p-button-sm"
+                (click)="deleteInvite()" label="{{'drivers.yes' | translate}}"></button>
+            <button pButton type="button"
+                styleClass="p-button-sm"
+                (click)="displayConfirmation=false" label="{{'drivers.no' | translate}}"></button>           
+        </div>  
+    </div>
+</div>

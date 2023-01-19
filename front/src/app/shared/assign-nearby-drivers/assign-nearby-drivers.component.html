@@ -1,0 +1,31 @@
+<div *ngFor="let driver of drivers" class="w-100 p-py-1">
+    <p-card class="p-p-1 p-my-1">
+        <div class="p-d-flex p-jc-between">
+            <div class="p-d-flex p-flex-column">
+                <div class="p-d-flex p-ai-center">
+                    <div class="chip-icon p-ml-2" [ngClass]="driver.online ? 'bg-success' : 'bg-danger'"></div>
+                    <h3 class="p-ml-2 p-my-0">{{driver.first_name}} {{driver.last_name}}</h3>
+                </div>
+
+                <div *ngIf="driver.online" class="p-my-1 p-ml-5">
+                    <h3 class="p-d-inline">{{driver.distance}}km</h3>
+                    <p *ngIf="driver.timeFromLastConnection && driver.timeFromLastConnection >= 1"
+                        class="p-d-inline p-mr-1">
+                        {{'orders.last_connection' | translate}} {{driver.timeFromLastConnection}} min </p>
+                    <p *ngIf="!driver.timeFromLastConnection" class="p-d-inline p-mr-1">
+                        ({{'drivers.a_few_seconds' | translate}}) </p>
+                </div>
+            </div>
+            <div class="p-mr-2 p-d-flex p-flex-column p-text-right">
+                <button type="text" pButton class="p-button-rounded p-p-2 p-ml-auto" (click)="assignDriver(driver.id)">
+                    <span class="material-icons p-ml-1 p-mr-2">
+                        directions_bike
+                    </span>
+                    <p class="p-m-0 weight-normal">
+                        {{ 'orders.assign' | translate}}
+                    </p>
+                </button>
+            </div>
+        </div>
+    </p-card>
+</div>

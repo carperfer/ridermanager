@@ -1,0 +1,177 @@
+<div class="orders-container">
+    <div class="table-container">
+        <p-table #table [value]="orders" [(selection)]="selectedOrders" [rowHover]="canEdit" [filterDelay]="0"
+                 [globalFilterFields]="['pickup_info.name','delivery_info.name', 'number','riderName']" [paginator]="true"
+                 [rows]="10" [rowsPerPageOptions]="[10,25,50]" [scrollable]="true" scrollHeight="55vh" [responsive]="true"
+                 [loading]="loading" sortField="deliver_at" [sortOrder]="-1">
+
+            <ng-template pTemplate="caption">
+                <div class="table-header p-d-flex p-jc-between">
+                    <h2>{{'menu.orders' | translate}}</h2>
+                    <span class="p-input-icon-left p-d-flex p-ai-center">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="table.filterGlobal($event?.target?.value, 'contains')"
+                               placeholder="{{'drivers.search' | translate}}"/>
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <!-- Checkbox -->
+                    <th style="width: 3em;"></th>
+
+                    <th pSortableColumn="pickup_info.name" class="p-grid">
+                        <div class="p-col-12 p-md-6">
+                            {{'orders.Pick_up_name' | translate}}
+                        </div>
+                        <div class="p-col-12 p-lg-6 p-d-flex p-ai-center p-p-0 p-d-none hide">
+                            <p-sortIcon field="pickup_info.name"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="pickup_at">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.hour_pick' | translate}}
+                            <p-sortIcon field="pickup_at" class="hide"></p-sortIcon>
+                            <p-columnFilter type="date" field="pickup_at" display="menu" class="p-ml-auto hide">
+                            </p-columnFilter>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="delivery_info.name">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.Delivery_name' | translate}}
+                            <p-sortIcon field="delivery_info.name" class="hide"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="deliver_at">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.hour_del' | translate}}
+                            <p-sortIcon field="deliver_at" class="hide"></p-sortIcon>
+                            <p-columnFilter type="date" field="deliver_at" display="menu" class="p-ml-auto hide">
+                            </p-columnFilter>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="number">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.number_order' | translate}}
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="status_id">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.Status' | translate}}
+                            <p-columnFilter field="status_id" matchMode="equals" display="menu" [showMatchModes]="false"
+                                            [showOperator]="false" [showAddButton]="false" class="p-ml-auto hide">
+                                <ng-template pTemplate="header">
+                                    <div class="p-px-3 p-pt-3 p-pb-0">
+                                        <span class="p-text-bold">{{'orders.Status' | translate}}</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-listbox [options]="orderStatuses" (onChange)="filter($event.value.id)">
+                                        <ng-template let-status pTemplate="item">
+                                            {{'status.' + status.id | translate}}
+                                        </ng-template>
+                                    </p-listbox>
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
+                    </th>
+
+                    <th pSortableColumn="riderName">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            {{'orders.rider' | translate}}
+                            <p-sortIcon field="riderName" class="hide"></p-sortIcon>
+                        </div>
+                    </th>
+
+                    <th pColumn="options">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                        </div>
+                    </th>
+
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-order>
+                <tr class="p-row">
+                    <td class="p-column-title" style="width: 3em;">
+                        <p-tableCheckbox *ngIf="canDelete" [value]="order" style="z-index: 1;"></p-tableCheckbox>
+                    </td>
+                    <td class="p-column-title">{{order.pickup_info.name}}</td>
+                    <td class="p-column-title">{{order.pickup_at | date:'dd/MM/yyyy HH:mm'}}</td>
+                    <td class="p-column-title">{{order.delivery_info.name}}</td>
+                    <td class="p-column-title">{{order.deliver_at | date:'dd/MM/yyyy HH:mm'}}</td>
+                    <td class="p-column-title">{{order.number}}</td>
+                    <td class="p-column-title">
+                            <app-chip-status class="p-my-0" [ngClass]="{'disabled': !canEdit || order.isCanceled, 'pointer' : canEdit && !order.isCanceled}" [statusId]="order.status_id"
+                                             [orderStatuses]="orderStatuses" (click)="toggleListbox($event, order)">
+                            </app-chip-status>
+                        <div class="p-d-flex p-ai-center" style="position: absolute">
+                            <p-listbox *ngIf="order.showStatuses" [options]="orderStatuses" class="listbox"
+                                       (onChange)="changeStatus(order, $event.value)">
+                                <ng-template let-status pTemplate="item">
+                                    <div class="chip-icon bg-{{status.name}}"></div>
+                                    {{'status.' + status.id | translate}}
+                                </ng-template>
+                            </p-listbox>
+                        </div>
+                    </td>
+                    <td class="p-column-title center">
+                        <button type="text" pButton class="p-button-rounded p-p-2 {{!order.user_id ? '' : 'driver-btn'}}"
+                                (click)="openAssignNearbyDrivers(order)" [ngClass]="{'edit-button' : order.user_id != null, 'disabled' : !canEdit || order.isCanceled}">
+                            <span class="material-icons p-ml-1 p-mr-2" [ngClass]="order.user_id ? 'primary-color' : 'color-white'">
+                                directions_bike
+                            </span>
+                            <p *ngIf="!order.user_id" class="p-m-0">
+                                {{ 'orders.assign' | translate}}
+                            </p>
+                            <p *ngIf="order.user_id" class="p-m-0 driver-btn">
+                                {{order.riderName}}
+                            </p>
+                        </button>
+                    </td>
+                    <td class="p-column-title center">
+                        <span *ngIf="showOrderHistory" class="material-icons icon p-mr-2 history-btn" [ngClass]="{'pointer' : showOrderHistory}"
+                            (click)="openOrderHistoryDialog(order)">
+                            history
+                        </span>
+                        <button pButton *ngIf="canEdit && !order.isCanceled" type="text"
+                                (click)="openOrderEditDialog(order)" class="p-button-rounded p-p-2 table-option-btn">
+                            <span class="material-icons p-ml-1 p-mr-2 color-white">
+                                edit
+                            </span>
+                            <p class="p-m-0">{{'edit' | translate}}</p>
+                        </button>
+                    </td>
+
+                </tr>
+            </ng-template>
+
+            <ng-template *ngIf="canDelete" pTemplate="footer">
+                <button pButton [disabled]="!selectedOrders?.length" type="button"
+                        (click)="deleteSelectedOrdersConfirmation()" class="p-button-danger delete-btn" icon="pi pi-trash"
+                        styleClass="p-button-sm"></button>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="9">{{'no_results' | translate}}</td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+
+        <p-confirmDialog #cd [style]="{width: '450px'}">
+            <ng-template pTemplate="footer">
+                <button type="button" pButton label="{{'drivers.cancel' | translate}}" (click)="cd.reject()"
+                        class="p-button-text"></button>
+                <button type="button" pButton label="{{'drivers.delete' | translate}}" (click)="cd.accept()"></button>
+            </ng-template>
+        </p-confirmDialog>
+    </div>
+</div>

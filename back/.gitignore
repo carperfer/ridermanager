@@ -1,0 +1,28 @@
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+/storage/*.key
+
+### Testing ###
+tests/_reports
+.phpunit.cache
+.phpunit.result.cache
+testdox.html
+
+### Laravel ###
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+
+/.vagrant
+
+# Laravel IDE helper
+*.meta.*
+_ide_*

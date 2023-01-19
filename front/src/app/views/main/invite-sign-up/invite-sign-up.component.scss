@@ -1,0 +1,68 @@
+:host {
+    font-family: Arial Rounded MT Bold;
+    font-style: normal;
+    font-weight: bold;
+}
+
+:host ::ng-deep {
+    #login-main-container {
+        flex-wrap: wrap;
+    }
+    .logo {
+        width: 250px;
+        margin: 0 auto;
+    }
+    .background-primary {
+        background-color: rgba(58, 113, 255, 1);
+    }
+    .sidebar-wave-container {
+        position: relative;
+        color: white;
+        max-height: 250px;
+        text-align: center;
+        &::after {
+            content: "";
+            height: 100vh;
+            top: 0;
+            left: 100px;
+            transform: rotate(90deg);
+            // left: 0;
+            width: 100vw;
+        }
+    }
+    .sidebar-description {
+        font-size: 24px;
+    }
+    .form-container {
+        min-width: 450px;
+    }
+    .title-container {
+        max-width: 600px;
+    }
+    .sidebar-wave-container::after {
+        @media screen and (min-width: 1200px) {
+            position: absolute;
+            top: 0;
+            left: 100px;
+            background: url("/assets/images/wave.svg") bottom no-repeat;
+        }
+    }
+    @media screen and (min-width: 1200px) {
+        #login-main-container {
+            height: 100%;
+            flex-direction: row !important;
+            overflow: hidden;
+        }
+        .logo {
+            margin: 0;
+        }
+        .sidebar-description {
+            font-size: 32px;
+        }
+        .sidebar-wave-container {
+            max-height: 100000px;
+            height: 100% !important;
+            text-align: left;
+        }
+    }
+}
