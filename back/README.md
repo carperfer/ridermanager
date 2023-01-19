@@ -1,6 +1,6 @@
 # RiderManager Back-end
 
-![License](https://img.shields.io/badge/license-Private-red)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![PHP Version](https://img.shields.io/badge/PHP-%5E8.0-blue)
 
 ## Instructions to set up the development environment
